@@ -35,6 +35,12 @@ test('Parametrized methods', { tag: '@smoke' }, async ({ page }) => { // Older m
     await pm.onDatepickerPage().selectDatepickerWithRangeFromToday(6, 10)
 })
 
+test.only('Testing with Argos CI', async ({ page }) => {
+    const pm = new PageManager(page)
+    await pm.navigateTo().formLayoutsPage()
+    await pm.navigateTo().datepickerPage()
+})
+
 // Student elegant variant:
 
 // Adding a simple keyword in every method like "get", will improve the readability of the code.

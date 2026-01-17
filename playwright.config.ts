@@ -16,6 +16,10 @@ export default defineConfig<TestOptions>({
   },
 
   retries: 1,
+  //   /* Retry on CI only */
+  // retries: process.env.CI ? 2 : 0,
+  // /* Opt out of parallel tests on CI. */
+  // workers: process.env.CI ? 1 : undefined,
   reporter: [
     ['json', { outputFile: 'test-results/jsonReport.json' }],
     ['junit', { outputFile: 'test-results/junitReport.xml' }],
