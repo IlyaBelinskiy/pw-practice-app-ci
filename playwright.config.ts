@@ -5,6 +5,9 @@ import * as dotenv from 'dotenv'; // Use import * as dotenv for compatibility
 import * as path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env'), override: true });
 
+import { createArgosReporterOptions } from '@argos-ci/playwright/reporter';
+
+
 export default defineConfig<TestOptions>({
   timeout: 40000,
   // globalTimeout: 60000,
@@ -21,6 +24,14 @@ export default defineConfig<TestOptions>({
   // /* Opt out of parallel tests on CI. */
   // workers: process.env.CI ? 1 : undefined,
   reporter: [
+    process.env.CI ? ["dot"] : ["list"],
+    [
+      "@argos-ci/playwright/reporter",
+      createArgosReporterOptions({
+        // Upload to Argos on CI only.
+        uploadToArgos: !!process.env.CI,
+      }),
+    ],
     ['json', { outputFile: 'test-results/jsonReport.json' }],
     ['junit', { outputFile: 'test-results/junitReport.xml' }],
     // ['allure-playwright'],
@@ -34,6 +45,7 @@ export default defineConfig<TestOptions>({
         : 'http://localhost:4200/',
 
     trace: 'on-first-retry',
+    screenshot: "only-on-failure",
     actionTimeout: 5000,
     navigationTimeout: 25000,
     video: {
@@ -100,7 +112,7 @@ export default defineConfig<TestOptions>({
 
   webServer: {
     command: 'npm run start',
-    url:'http://localhost:4200/',
+    url: 'http://localhost:4200/',
     // timeout: 120000
   }
 });
