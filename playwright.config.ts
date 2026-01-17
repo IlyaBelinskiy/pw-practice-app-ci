@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import type { TestOptions } from './test-options';
-import { createArgosReporterOptions } from "@argos-ci/playwright/reporter";
+// import { createArgosReporterOptions } from "@argos-ci/playwright/reporter";
 
 
 import * as dotenv from 'dotenv'; // Use import * as dotenv for compatibility
@@ -28,10 +28,10 @@ export default defineConfig<TestOptions>({
     // Add Argos reporter.
     [
       "@argos-ci/playwright/reporter",
-      createArgosReporterOptions({
+      {
         // Upload to Argos on CI only.
         uploadToArgos: !!process.env.CI
-      })
+      }
     ],
     ['json', { outputFile: 'test-results/jsonReport.json' }],
     ['junit', { outputFile: 'test-results/junitReport.xml' }],
