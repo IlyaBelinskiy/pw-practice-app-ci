@@ -5,8 +5,6 @@ import * as dotenv from 'dotenv'; // Use import * as dotenv for compatibility
 import * as path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env'), override: true });
 
-import { createArgosReporterOptions } from '@argos-ci/playwright/reporter';
-
 
 export default defineConfig<TestOptions>({
   timeout: 40000,
@@ -27,10 +25,10 @@ export default defineConfig<TestOptions>({
     process.env.CI ? ["dot"] : ["list"],
     [
       "@argos-ci/playwright/reporter",
-      createArgosReporterOptions({
+      {
         // Upload to Argos on CI only.
         uploadToArgos: !!process.env.CI,
-      }),
+      },
     ],
     ['json', { outputFile: 'test-results/jsonReport.json' }],
     ['junit', { outputFile: 'test-results/junitReport.xml' }],
