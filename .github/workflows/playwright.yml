@@ -5,8 +5,8 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
-  playwright:
-    name: 'Playwright Tests'
+  test:
+    name: 'Playwright Tests In Docker Container'
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.57.0-noble
@@ -18,5 +18,11 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm install --force
-      - name: Run your tests
+      - name: Run Playwright tests
         run: npm run pageObjects-chrome
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
